@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3 Demo</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <!-- 引入 Vue3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      // 创建 Vue 应用
+      const app = Vue.createApp({
+        // 定义响应式数据
+        data() {
+          return {
+            inputValue: "",
+            list: [],
+          };
+        },
+
+        // 定义组件方法
+        methods: {
+          handleAddItem() {
+            // 把输入内容添加到数组中
+            this.list.push(this.inputValue);
+
+            // 清空输入框
+            this.inputValue = "";
+          },
+        },
+
+        template: `
+          <div>
+            <!-- 双向绑定 inputValue -->
+            <input v-model="inputValue" />
+
+            <!-- 点击执行 handleAddItem，title 绑定 inputValue -->
+            <button
+              v-on:click="handleAddItem"
+              v-bind:title="inputValue"
+            >
+              Add
+            </button>
+
+            <ul>
+              <!--
+                遍历 list
+                item 是当前元素
+                index 是当前索引
+
+                把 item 和 index 通过 props 传给子组件
+              -->
+              <todo-item
+                v-for="(item, index) of list"
+                v-bind:key="index"
+                v-bind:content="item"
+                v-bind:index="index"
+              />
+            </ul>
+          </div>
+        `,
+      });
+
+      // 注册 todo-item 子组件
+      app.component("todo-item", {
+        // 接收父组件传递的数据
+        props: ["content", "index"],
+        template: "<li>{{ index }}--{{ content }}</li>",
+      });
+
+      // 挂载 Vue 应用
+      app.mount("#root");
+    </script>
+  </body>
+</html>

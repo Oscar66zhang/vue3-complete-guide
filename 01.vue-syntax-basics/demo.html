@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3 Demo</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <!-- 引入 Vue3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      /*
+      创建 Vue 应用
+         ↓
+      读取 data
+         ↓
+      生成 DOM
+         ↓
+      挂载到 #root
+         ↓
+      执行 mounted()
+      */
+
+      // 创建一个Vue实例
+      Vue.createApp({
+        // 这里定义当前组件的数据
+        data() {
+          return {
+            content: 1,
+          };
+        },
+        // 页面加载之后自动执行
+        mounted() {
+          setInterval(() => {
+            this.content += 1;
+          }, 1000);
+        },
+        // 这里定义组件要渲染的 HTML
+        template: "<div>{{content}}</div>",
+      }).mount("#root");
+    </script>
+  </body>
+</html>

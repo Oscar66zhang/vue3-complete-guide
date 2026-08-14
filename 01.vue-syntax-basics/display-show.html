@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3 Demo</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <!-- 引入 Vue3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      // 创建一个Vue实例
+      Vue.createApp({
+        // 这里定义当前组件的数据
+        data() {
+          return {
+            show: true,
+          };
+        },
+        // methods 是 Vue Options API 里专门用来放“方法”的地方
+        methods: {
+          handleBtnClick() {
+            this.show = !this.show;
+          },
+        },
+        // 这里定义组件要渲染的 HTML
+        template: `<div>
+          <span v-if="show">Hello World</span>&nbsp;
+          <button v-on:click="handleBtnClick">显示/隐藏</button>
+          </div>`,
+      }).mount("#root");
+    </script>
+  </body>
+</html>
