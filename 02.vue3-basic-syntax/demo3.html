@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3 Demo</title>
+    <style>
+      .red {
+        color: red;
+      }
+      .greenyellow {
+        color: greenyellow;
+      }
+    </style>
+    <!-- 引入 Vue3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          show: false,
+          conditionOne: false,
+          conditionTwo: true,
+        };
+      },
+      template: `
+      <div v-if="show">Hello World</div>
+      <div v-if="conditionOne">show time</div>
+      <div v-else-if="conditionTwo">else if</div>
+       <div v-else-if>end time</div>
+      <div v-show="show">Bye World</div>
+      `,
+    });
+
+    //vm 代表的就是vue应用的根组件
+    const vm = app.mount("#root");
+  </script>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3 Demo</title>
+    <style>
+      .red {
+        color: red;
+      }
+      .greenyellow {
+        color: greenyellow;
+      }
+    </style>
+    <!-- 引入 Vue3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          classString: "red",
+          classObject: { red: true, greenyellow: true },
+          classArray: ["red", "greenyellow", { brown: false }],
+          styleString: "color:yellow;background:orange",
+          classObject: { color: "orange", background: "yellow" },
+        };
+      },
+      template: `<div :style="classObject">
+        Hello World
+        </div>`,
+    });
+
+    app.component("demo", {
+      template: `
+      <div :class="$attrs.class">one</div>
+      <div :class="$attrs.class">two</div>
+      `,
+    });
+    //vm 代表的就是vue应用的根组件
+    const vm = app.mount("#root");
+  </script>
+</html>
