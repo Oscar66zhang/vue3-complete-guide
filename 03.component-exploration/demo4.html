@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Demo</title>
+
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 挂载节点 -->
+    <div id="root"></div>
+
+    <script>
+      // Non-prop 属性：没有在 props 中声明的属性，会进入 $attrs
+      const app = Vue.createApp({
+        template: `
+        <div>
+          <counter msg="hello" msg1="hello1" />
+        </div>
+      `,
+      });
+
+      app.component("counter", {
+        // inheritAttrs: false, // 禁止 $attrs 自动继承到根元素
+        mounted() {
+          console.log(this.$attrs.msg);
+        },
+        template: `
+        <!-- 只绑定 msg -->
+        <div v-bind:msg="$attrs.msg">Counter</div>
+
+        <!-- 绑定 $attrs 中的所有属性 -->
+        <div v-bind="$attrs">Counter</div>
+
+        <!-- :msg1 是 v-bind:msg1 的简写 -->
+        <div :msg1="$attrs.msg1">Counter</div>
+        `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

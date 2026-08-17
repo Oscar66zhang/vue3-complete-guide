@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Demo</title>
+
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 挂载节点 -->
+    <div id="root"></div>
+
+    <script>
+      //作用域插槽
+      const app = Vue.createApp({
+        template: `
+          <list v-slot="{{item}}">
+            <div>
+              {{item}}
+            </div>
+          </list>
+        `,
+      });
+
+      app.component("list", {
+        data() {
+          return {
+            list: [1, 2, 3],
+          };
+        },
+        template: `
+        <div>
+          <slot v-for="item in list" :item="item" />
+        </div>
+        `,
+      });
+
+      // 挂载 Vue 应用
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

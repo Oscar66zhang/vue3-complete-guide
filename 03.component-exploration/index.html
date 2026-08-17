@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Demo</title>
+
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 挂载节点 -->
+    <div id="root"></div>
+
+    <script>
+      // 组件定义
+      // 组件具备复用性
+      // 全局组件，只要定义了，处处可以用，性能不高，但是使用起来简单
+      const app = Vue.createApp({
+        template: `<div>
+          <counter-parent />
+          </div>`,
+      });
+
+      app.component("counter-parent", {
+        template: `<counter />`,
+      });
+
+      app.component("counter", {
+        data() {
+          return {
+            count: 1,
+          };
+        },
+        template: `<div @click=count+=1>{{count}}</div>`,
+      });
+
+      app.component("world", {
+        template: `<div>world</div>`,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

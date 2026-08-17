@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Demo</title>
+
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 挂载节点 -->
+    <div id="root"></div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            count: 1,
+          };
+        },
+
+        template: `
+          <!--
+            v-model:app="count"
+            相当于：
+            :app="count"
+            @update:app="count = $event"
+          -->
+          <counter v-model:app="count" />
+        `,
+      });
+
+      app.component("counter", {
+        // 接收 v-model:app 传来的值
+        props: ["app"],
+
+        // 声明子组件会触发的事件
+        emits: ["update:app"],
+
+        methods: {
+          handleClick() {
+            // 通知父组件更新 app，新值为 app + 3
+            this.$emit("update:app", this.app + 3);
+          },
+        },
+
+        template: `
+          <!-- 点击后通知父组件修改 count -->
+          <div @click="handleClick">
+            {{ app }}
+          </div>
+        `,
+      });
+
+      // 挂载 Vue 应用
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

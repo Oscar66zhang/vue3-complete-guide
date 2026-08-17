@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Demo</title>
+
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 挂载节点 -->
+    <div id="root"></div>
+
+    <script>
+      // slot 插槽
+      // 父模里调用的数据属性，使用的都是父模板里的数据
+      // 子模里调用的数据属性，使用的都是子模板里的数据
+      // 具名插槽：
+      // 当子组件中有多个位置需要接收父组件传入的内容时，
+      // 可以给 <slot> 设置 name。
+      // 父组件通过 v-slot:插槽名，把内容放到对应的具名插槽中。
+      // v-slot:header 对应 <slot name="header">
+      // v-slot:footer 对应 <slot name="footer">
+      const app = Vue.createApp({
+        template: `
+          <layout>
+            <template  v-slot:header>
+                <div>header</div>
+             </template>
+
+              <template v-slot:footer>
+                <div>footer</div>
+             </template>
+          </layout>
+        `,
+      });
+
+      app.component("layout", {
+        template: `
+        <div>
+          <slot name="header"></slot>
+          <div>content</div>
+          <slot name="footer"></slot>
+        </div>
+        `,
+      });
+
+      // 挂载 Vue 应用
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

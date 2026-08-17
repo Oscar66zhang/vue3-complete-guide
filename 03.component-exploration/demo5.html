@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Demo</title>
+
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 挂载节点 -->
+    <div id="root"></div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            count: 1,
+          };
+        },
+
+        methods: {
+          // 子组件触发 add-one 后，父组件修改自己的 count
+          handleAdd(count) {
+            this.count = count;
+          },
+        },
+
+        template: `
+          <div>
+            <!--
+              :count      父组件把 count 传给子组件
+              @add-one    监听子组件触发的 add-one 事件
+            -->
+            <counter
+              :count="count"
+              @add="handleAdd"
+            />
+          </div>
+        `,
+      });
+
+      app.component("counter", {
+        // 接收父组件传来的 count
+        props: ["count"],
+        emits: ["add"],
+        /* emits: {
+          add: (count) => {
+            if (count < 0) {
+              return true;
+            }
+            return false;
+          },
+        },
+        */
+        methods: {
+          handleClick() {
+            <!-- 声明这个子组件允许向外触发一个名叫 add 的自定义事件 -->
+            // 向父组件触发 add-one 自定义事件
+            this.$emit("add", this.count + 3);
+          },
+        },
+
+        template: `
+          <!-- 点击时通知父组件 -->
+          <div @click="handleClick">
+            {{ count }}
+          </div>
+        `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

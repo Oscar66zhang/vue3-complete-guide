@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vue Demo</title>
+
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 应用的挂载节点 -->
+    <div id="root"></div>
+
+    <script>
+      /*
+        slot 插槽：
+
+        1. 父组件模板中写的内容，默认使用父组件的数据
+        2. 子组件模板中写的内容，默认使用子组件的数据
+        3. slot 只改变内容最终显示的位置，不改变内容原本所属的作用域
+
+        简单理解：
+        代码写在哪个组件的模板里，就默认使用哪个组件的数据。
+      */
+
+      // 创建 Vue 应用，也可以把这里理解为父组件
+      const app = Vue.createApp({
+        data() {
+          return {
+            // 父组件自己的数据
+            text: "提交",
+          };
+        },
+
+        template: `
+          <!--
+            这里的 <div>{{ text }}</div>
+            是写在父组件模板中的。
+
+            所以 {{ text }} 使用的是父组件 data() 里的 text。
+
+            虽然它最终会显示到 myform 子组件的 <slot> 中，
+            但是它的数据作用域依然属于父组件。
+          -->
+          <myform>
+            <div>{{ text }}</div>
+          </myform>
+
+
+          <!--
+            同理，这里的 {{ text }}
+            仍然使用父组件自己的 text。
+          -->
+          <myform>
+            <button>{{ text }}</button>
+          </myform>
+        `,
+      });
+
+      // 注册一个 test 全局组件
+      // 当前案例中暂时没有使用它
+      app.component("test", {
+        template: `
+          <div>test</div>
+        `,
+      });
+
+      // 注册 myform 全局组件
+      app.component("myform", {
+        methods: {
+          // 这是 myform 子组件自己的方法
+          handleClick() {
+            alert(123);
+          },
+        },
+
+        template: `
+          <div>
+
+            <!--
+              这是写在 myform 子组件模板中的，
+              所以这里的内容属于子组件自己的作用域。
+            -->
+            <input />
+
+
+            <!--
+              @click="handleClick"
+
+              handleClick 是写在 myform 子组件 methods 中的，
+              所以这里调用的是子组件自己的 handleClick 方法。
+            -->
+            <span @click="handleClick">
+
+              <!--
+                slot 插槽：
+
+                用来接收父组件写在
+                <myform> ... </myform>
+                中间的内容。
+
+                父组件传进来的内容，会显示在这个位置。
+
+                注意：
+                slot 只是改变内容的“显示位置”，
+                不会改变内容原本的数据作用域。
+
+                比如父组件写：
+
+                <myform>
+                  <div>{{ text }}</div>
+                </myform>
+
+                这个 {{ text }} 虽然最后显示在这里，
+                但它依然使用父组件的 text，
+                不会使用 myform 子组件的数据。
+              -->
+              <slot></slot>
+
+            </span>
+
+          </div>
+        `,
+      });
+
+      // 把 Vue 应用挂载到 #root
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>
