@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Advanced</title>
+    <style>
+      .area {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 300px;
+        background: green;
+      }
+
+      .mask {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: #000;
+        opacity: 0.5;
+        color: aquamarine;
+        font-size: 100px;
+      }
+    </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <div id="hello"></div>
+    <script>
+      // teleport传送门
+      const app = Vue.createApp({
+        data() {
+          return {
+            show: false,
+            message: "hello",
+          };
+        },
+        methods: {
+          handleBtnClick() {
+            this.show = !this.show;
+          },
+        },
+        // Teleport 的作用：代码逻辑还属于当前组件，但把实际 DOM 渲染到页面的另一个位置
+        template: `
+        <div class="area">
+          <button @click="handleBtnClick">按钮</button>
+          <Teleport to="#hello">
+             <div class="mask" v-show="show">{{message}}</div>
+          </Teleport>
+        </div>
+      `,
+      });
+
+      // 挂载
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

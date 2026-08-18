@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Advanced</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // 自定义指令 directive
+      /*
+       const directives = {
+        focus: {
+          mounted(el) {
+            el.focus();
+          },
+        },
+      }; */
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            hello: true,
+          };
+        },
+        template: `
+        <div>
+          <div v-if="hello">
+             <input  v-focus />
+          </div>
+        </div>
+      `,
+      });
+      // directive：当你需要直接操作某个 DOM 元素时，可以把这段 DOM 操作封装成一个自定义指令
+      /*
+              Vue 开始创建页面
+                    ↓
+              发现 <input v-focus>
+                    ↓
+              找到 focus 指令
+                    ↓
+              input 挂载到页面
+                    ↓
+              执行 mounted(el)
+                    ↓
+              el 就是 input DOM
+                    ↓
+              执行 el.focus()
+                    ↓
+              输入框自动获得焦点
+       */
+      app.directive("focus", {
+        beforeMount(el) {
+          console.log("beforeMount");
+        },
+        mounted(el) {
+          console.log("mounted");
+          el.focus();
+        },
+        beforeUpdate() {
+          console.log("beforeUpdate");
+        },
+        updated() {
+          console.log("updated");
+        },
+        beforeUnmount() {
+          console.log("beforeUnmount");
+        },
+        unmounted() {
+          console.log("unmounted");
+        },
+      });
+
+      // 挂载
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

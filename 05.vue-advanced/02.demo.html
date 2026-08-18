@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Advanced</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // mixin 混入：把多个组件都会用到的公共逻辑抽出来，重复利用
+      // 组件 data, methods 优先级高于 mixin data, methods 优先级
+      // 生命周期函数，先执行 mixin 里面的，再执行组件里面的
+      // 自定义的属性，组件种的属性优先级高于 mixin 属性的优先级
+      const myMixin = {
+        number: 1,
+      };
+
+      // 创建 Vue 应用
+      const app = Vue.createApp({
+        mixins: [myMixin],
+        number: 2,
+        template: `
+        <div>
+          <div>
+            {{ this.$options.number }}
+          </div>
+        </div>
+      `,
+      });
+      // 当 mixin 和组件自身都定义了一个自定义选项 number 时，到底该怎么合并它们
+      app.config.optionMergeStrategies.number = (mixinVal, appVal) => {
+        return mixinVal || appVal;
+      };
+
+      // 挂载
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

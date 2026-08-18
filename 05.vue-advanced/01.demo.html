@@ -11,7 +11,7 @@
     <div id="root"></div>
 
     <script>
-      // mixin 混入
+      // mixin 混入：把多个组件都会用到的公共逻辑抽出来，重复利用
       // 组件 data 优先级高于mixin data 优先级
       // 生命周期函数，先执行mixin 里面的，再执行组件里面的
       const myMixin = {
@@ -58,9 +58,7 @@
             {{ number }}
           </div>
 
-          <div>
-            {{ count }}
-          </div>
+          <child />
 
           <button @click="handleClick">
             Add
