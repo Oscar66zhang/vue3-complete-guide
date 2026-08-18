@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Advanced</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // mixin 混入
+      // 组件 data 优先级高于mixin data 优先级
+      // 生命周期函数，先执行mixin 里面的，再执行组件里面的
+      const myMixin = {
+        data() {
+          return {
+            number: 1,
+            count: 222,
+          };
+        },
+        created() {
+          console.log("mixin created");
+        },
+        methods: {
+          handleClick() {
+            console.log("mixin handleClick");
+          },
+        },
+      };
+
+      // 创建 Vue 应用
+      const app = Vue.createApp({
+        //当组件里面有数据的时候用组件内的数据，没有数据的时候用混合数据
+        data() {
+          return {
+            number: 9,
+          };
+        },
+        // 使用 mixin
+        mixins: [myMixin],
+
+        created() {
+          console.log("created");
+        },
+
+        methods: {
+          handleClick() {
+            this.number++;
+          },
+        },
+
+        template: `
+        <div>
+          <div>
+            {{ number }}
+          </div>
+
+          <div>
+            {{ count }}
+          </div>
+
+          <button @click="handleClick">
+            Add
+          </button>
+        </div>
+      `,
+      });
+
+      // 挂载
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>
