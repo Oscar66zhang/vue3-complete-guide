@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vue Animations</title>
+    <style>
+      /* 离开动画结束时的状态 */
+      .v-leave-to {
+        opacity: 0;
+      }
+      /* 进入动画刚开始时的状态 */
+      .v-enter-from {
+        opacity: 0;
+      }
+      /* 进入动画执行期间的规则 */
+      .v-enter-active,
+      .v-leave-active {
+        transition: opacity 1s ease-in;
+      }
+
+      /* 进入动画结束时的状态 */
+      .v-enter-to {
+        opacity: 1;
+      }
+    </style>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // 多个单元素标签之间的切换
+      // 多个单组件之间的之间的切换
+      const ComponentA = {
+        template: "<div>hello world</div>",
+      };
+
+      const ComponentB = {
+        template: "<div>bye world</div>",
+      };
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            component: "component-a",
+          };
+        },
+        methods: {
+          handleClick() {
+            if (this.component === "component-a") {
+              this.component = "component-b";
+            } else {
+              this.component = "component-a";
+            }
+          },
+        },
+
+        components: {
+          "component-a": ComponentA,
+          "component-b": ComponentB,
+        },
+
+        template: `
+        <div>
+          <transition mode="out-in" appear>
+            <component :is='component' />
+          </transition>
+          <button @click="handleClick">Toggle</button>
+        </div>
+      `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

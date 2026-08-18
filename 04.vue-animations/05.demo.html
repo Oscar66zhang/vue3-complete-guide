@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vue Animations</title>
+    <style>
+      /*  .v- 是 Vue <Transition> 默认生成的过渡 CSS 类名前缀 */
+      /*
+      @keyframes shake {
+        0% {
+          transform: translateX(-100px);
+        }
+        50% {
+          transform: translateX(-50px);
+        }
+        100% {
+          transform: translateX(50px);
+        }
+      }
+
+      .v-enter-from {
+        color: red;
+      }
+
+      .v-enter-active {
+        animation: shake 10s;
+        transition: all 3s ease-in;
+      }
+
+      .v-leave-active {
+        color: red;
+        animation: shake 10s;
+        transition: all 3s ease-in;
+      }
+      */
+    </style>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // 单元素，单组件的入场出场动画
+      const app = Vue.createApp({
+        data() {
+          return {
+            show: false,
+          };
+        },
+        methods: {
+          handleClick() {
+            this.show = !this.show;
+          },
+          handleBeforeEnter(el) {
+            el.style.color = "red";
+          },
+          handleEnterActive(el, done) {
+            const animation = setInterval(() => {
+              const color = el.style.color;
+
+              if (color === "red") {
+                el.style.color = "green";
+              } else {
+                el.style.color = "red";
+              }
+            }, 1000);
+
+            setTimeout(() => {
+              clearInterval(animation);
+              done();
+            }, 3000);
+          },
+          handleEnterEnd() {
+            alert(123);
+          },
+        },
+
+        template: `
+        <div>
+          <transition
+          :css="false"
+          @before-enter="handleBeforeEnter"
+          @enter="handleEnterActive"
+          @after-enter="handleEnterEnd"
+          >
+               <div v-show="show">hello world</div>
+           </transition>
+          <button @click="handleClick">Toggle</button>
+        </div>
+      `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

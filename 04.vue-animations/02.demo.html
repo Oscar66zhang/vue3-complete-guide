@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vue Animations</title>
+    <style>
+      /*  .v- 是 Vue <Transition> 默认生成的过渡 CSS 类名前缀 */
+      @keyframes shake {
+        0% {
+          transform: translateX(-100px);
+        }
+        50% {
+          transform: translateX(-50px);
+        }
+        100% {
+          transform: translateX(50px);
+        }
+      }
+
+      .v-enter-from {
+      }
+
+      .v-enter-to {
+      }
+
+      .v-leave-active {
+        transition: shake 3s;
+      }
+
+      .v-enter-active {
+        animation: shake 3s;
+      }
+    </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // 单元素，单组件的入场出场动画
+      const app = Vue.createApp({
+        data() {
+          return {
+            show: false,
+          };
+        },
+        methods: {
+          handleClick() {
+            this.show = !this.show;
+          },
+        },
+
+        template: `
+        <div>
+          <transition>
+               <div v-show="show">hello world</div>
+           </transition>
+          <button @click="handleClick">Toggle</button>
+        </div>
+      `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

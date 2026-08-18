@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vue Animations</title>
+    <style>
+      /* 进入动画刚开始时的状态 */
+      .v-enter-from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      .v-enter-active {
+        transition: all 0.5s ease-in;
+      }
+
+      /* 进入动画结束时的状态 */
+      .v-enter-to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .v-move {
+        transition: all 0.5s ease-in;
+      }
+
+      .list-item {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    </style>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // 列表动画的实现
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            list: [1, 2, 3],
+          };
+        },
+        methods: {
+          handleClick() {
+            this.list.unshift(this.list.length + 1);
+          },
+        },
+
+        template: `
+        <div>
+          <transition-group>
+            <span class="list-item"  v-for="item in list" :key="item">{{item}}</span>
+             </transition-group>
+            <button @click="handleClick">Toggle</button>
+
+        </div>
+      `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>
