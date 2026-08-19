@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Composition API</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      const app = Vue.createApp({
+        methods: {
+          handleChange() {
+            alert("change");
+          },
+        },
+        template: `
+           <child @change="handleChange">parent</child>
+        `,
+      });
+
+      app.component("child", {
+        template: `<div @click="handleClick">123123</div>`,
+        setup(props, context) {
+          const { h } = Vue;
+          const { attrs, slots, emit } = context;
+          console.log(slots);
+
+          function handleClick() {
+            emit("change");
+          }
+          return {
+            handleClick,
+          };
+          // console.log(attrs.app); //None-Props属性
+          // return () => h("div", {}, slots.default());
+        },
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

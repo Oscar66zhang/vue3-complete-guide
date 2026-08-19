@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Composition API</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      //关于 list操作的内容进行了封装
+      const listRelativeEffect = () => {
+        const { reactive } = Vue;
+        const list = reactive([]);
+        const addItemToList = (item) => {
+          list.push(item);
+        };
+        return { list, addItemToList };
+      };
+
+      const app = Vue.createApp({
+        setup() {
+          const inputValue = ref("123");
+          const list = reactive([]);
+
+          const handleInputValueChange = (e) => {
+            inputValue.value = e.target.value;
+          };
+
+          return {
+            list,
+            inputValue,
+            handleInputValueChange,
+            handleSubmit,
+          };
+        },
+        template: `
+        <div>
+          <input :value="inputValue" @input="handleInputValueChange" />
+          <button @click="handleSubmit">提交</button>
+          <ul>
+            <li v-for="(item, index) in list" :key="index">{{item}}</li>
+          </ul>
+        </div>
+        `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

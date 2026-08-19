@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Composition API</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      const app = Vue.createApp({
+        template: `
+          <div>
+            {{ age }}
+          </div>
+        `,
+
+        /*
+        toRef：转一个属性
+        toRefs：批量转整个对象的所有属性
+        */
+        setup(props, context) {
+          const { reactive, toRef } = Vue;
+          const data = reactive({ name: "dell" });
+          const age = toRef(data, "age");
+          setTimeout(() => {
+            age.value = "lee";
+          }, 2000);
+          return {
+            age,
+          };
+        },
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Composition API</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      // computed 计算属性
+      const app = Vue.createApp({
+        setup() {
+          const { reactive, computed } = Vue;
+          const countObj = reactive({ count: 0 });
+          const handleClick = () => {
+            countObj.count += 1;
+          };
+
+          let countAddFive = computed({
+            get: () => {
+              return countObj.count + 5;
+            },
+            set: (param) => {
+              return (countObj.count = param - 5);
+            },
+          });
+
+          setTimeout(() => {
+            countAddFive.value = 100;
+          }, 3000);
+
+          return {
+            countAddFive,
+            countObj,
+            handleClick,
+          };
+        },
+        template: `
+        <div>
+          <span @click="handleClick">{{countObj.count}}</span> -- {{countAddFive}}
+        </div>
+        `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>
