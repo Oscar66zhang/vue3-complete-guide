@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Composition API</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      const app = Vue.createApp({
+        // beforeMount => onBeforeMount
+        // mounted => onMounted
+        // beforeUpdate => onBeforeUpdate
+        // beforeUnmount => onBeforeUnmount
+        // unmounted => onUnmounted
+        setup() {
+          const {
+            ref,
+            onBeforeMount,
+            onMounted,
+            onBeforeUpdate,
+            onUpdated,
+            onRenderTracked,
+            onRenderTriggered,
+          } = Vue;
+
+          const name = ref("dell");
+
+          // 组件挂载到页面之前执行
+          // 此时真实 DOM 还没有挂载完成
+          onBeforeMount(() => {
+            console.log("onBeforeMount");
+          });
+
+          // 组件挂载完成后执行
+          // 此时已经可以访问真实 DOM
+          // 常用于：请求数据、操作 DOM、初始化第三方插件
+          onMounted(() => {
+            console.log("onMounted");
+          });
+
+          // 响应式数据变化后，DOM 更新之前执行
+          // 此时页面还是更新前的 DOM 状态
+          onBeforeUpdate(() => {
+            console.log("onBeforeUpdate");
+          });
+
+          // DOM 更新完成后执行
+          // 此时可以获取更新后的 DOM
+          onUpdated(() => {
+            console.log("onUpdated");
+          });
+
+          // 渲染时收集响应式依赖时触发
+          // 用来调试：当前组件依赖了哪些响应式数据
+          // 例如模板中使用了 {{ name }}，就会追踪 name
+          onRenderTracked(() => {
+            console.log("onRenderTracked");
+          });
+
+          // 响应式数据发生变化，并触发组件重新渲染时执行
+          // 用来调试：到底是哪个响应式数据导致页面更新
+          onRenderTriggered(() => {
+            console.log("onRenderTriggered");
+          });
+
+          const handleClick = () => {
+            // 修改响应式数据
+            // 因为 name 在模板中被使用，所以会触发组件更新
+            name.value = "lee";
+          };
+
+          return {
+            name,
+            handleClick,
+          };
+        },
+
+        template: `
+              <div @click="handleClick">
+                {{ name }}
+              </div>
+            `,
+      });
+
+      const vm = app.mount("#root");
+    </script>
+  </body>
+</html>
