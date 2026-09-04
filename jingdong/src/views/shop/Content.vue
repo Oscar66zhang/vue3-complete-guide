@@ -34,18 +34,18 @@
             class="product__number__minus"
             @click="
               () => {
-                changeCartItemInfo(shopId, item._id, item, -1);
+                changeCartItem(shopId, item._id, item, -1, shopName);
               }
             "
             >-</span
           >
-          {{ cartList?.[shopId]?.[item._id]?.count || 0 }}
+          {{ getProductCartCount(shopId, item._id) || 0 }}
           <!-- 增加数据 -->
           <span
             class="product__number__plus"
             @click="
               () => {
-                changeCartItemInfo(shopId, item._id, item, 1);
+                changeCartItem(shopId, item._id, item, 1, shopName);
               }
             "
             >+</span
@@ -59,8 +59,9 @@
 <script>
 import { reactive, ref, toRefs, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { useCommonCartEffect } from './commonCartEffect';
 import { get } from '../../utils/request';
+import { useCommonCartEffect } from './commonCartEffect';
+import { useStore } from 'vuex';
 
 const categories = [
   {
@@ -85,11 +86,12 @@ const useTabEffect = () => {
   };
   return { currentTab, handleTabClick };
 };
-
+// 和当前分类下的商品列表相关的逻辑
 const useCurrentListEffect = (currentTab, shopId) => {
   const content = reactive({
     list: [],
   });
+  // 获取当前分类下的商品列表
   const getContentData = async () => {
     const result = await get(`/shop/${shopId}/products`, {
       tab: currentTab.value,
@@ -107,14 +109,39 @@ const useCurrentListEffect = (currentTab, shopId) => {
   return { list };
 };
 
+// 和购物车相关的逻辑
+const useCartEffect = () => {
+  const store = useStore();
+  const { cartList, changeCartItemInfo } = useCommonCartEffect();
+
+  // 改变购物车中商品的数量
+  const changeShopName = (shopId, shopName) => {
+    store.commit('changeShopName', { shopId, shopName });
+  };
+
+  // 改变购物车中商品的数量
+  const changeCartItem = (shopId, productId, productInfo, num, shopName) => {
+    changeCartItemInfo(shopId, productId, productInfo, num);
+    changeShopName(shopId, shopName);
+  };
+
+  // 获取购物车中某个商品的数量
+  const getProductCartCount = (shopId, productId) => {
+    return cartList?.[shopId]?.productList?.[productId]?.count || 0;
+  };
+
+  return { cartList, changeCartItem, getProductCartCount };
+};
+
 export default {
   name: 'ContentView',
+  props: ['shopName'],
   setup() {
     const route = useRoute();
     const shopId = route.params.id;
     const { currentTab, handleTabClick } = useTabEffect();
     const { list } = useCurrentListEffect(currentTab, shopId);
-    const { cartList, changeCartItemInfo } = useCommonCartEffect();
+    const { cartList, changeCartItem, getProductCartCount } = useCartEffect();
     return {
       list,
       currentTab,
@@ -122,7 +149,8 @@ export default {
       handleTabClick,
       cartList,
       shopId,
-      changeCartItemInfo,
+      changeCartItem,
+      getProductCartCount,
     };
   },
 };
