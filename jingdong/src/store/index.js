@@ -2,7 +2,7 @@ import { createStore } from 'vuex';
 
 // 将购物车数据存储到本地存储中
 const setLocalCartList = (state) => {
-  const { cartList } = state.cartList;
+  const { cartList } = state;
   const cartListString = JSON.stringify(cartList);
   localStorage.setItem('cartList', cartListString);
 };
@@ -10,7 +10,19 @@ const setLocalCartList = (state) => {
 // 从本地存储中获取购物车数据
 const getLocalCartList = () => {
   const cartListString = localStorage.getItem('cartList');
-  return cartListString ? JSON.parse(cartListString) : {};
+  if (!cartListString) return {};
+
+  try {
+    const cartList = JSON.parse(cartListString);
+    if (cartList && typeof cartList === 'object' && !Array.isArray(cartList)) {
+      return cartList;
+    }
+  } catch (error) {
+    // 旧代码可能存入了 "undefined"，解析失败时重置购物车缓存。
+  }
+
+  localStorage.removeItem('cartList');
+  return {};
 };
 
 /*
@@ -122,6 +134,14 @@ export default createStore({
       shopInfo.shopName = shopName;
       state.cartList[shopId] = shopInfo;
       setLocalCartList(state);
+    },
+
+    // 清除购物车的数据
+    clearCartData(state, shopId) {
+      if (state.cartList[shopId]) {
+        state.cartList[shopId].productList = {};
+        setLocalCartList(state);
+      }
     },
   },
 

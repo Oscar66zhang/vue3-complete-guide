@@ -19,47 +19,45 @@
           >
         </div>
       </div>
-      <template v-for="item in productList" :key="item._id">
-        <div class="product__item" v-if="item.count > 0">
-          <div class="product__item__check">
-            <i
-              :class="`iconfont ${item.check ? 'icon-check' : 'icon-unchecked'}`"
-              @click="() => changeCartItemChecked(shopId, item._id)"
-            />
-          </div>
-          <img class="product__item__img" :src="item.imgUrl" />
-          <div class="product__item__detail">
-            <h4 class="product__item__title">{{ item.name }}</h4>
-            <p class="product__item__price">
-              <span class="product__item__yen">&yen;</span>{{ item.price }}
-              <span class="product__item__origin">&yen;{{ item.originalPrice }}</span>
-            </p>
-          </div>
-          <!-- 减少数据 -->
-          <div class="product__number">
-            <span
-              class="product__number__minus"
-              @click="
-                () => {
-                  changeCartItemInfo(shopId, item._id, item, -1);
-                }
-              "
-              >-</span
-            >
-            {{ item.count || 0 }}
-            <!-- 增加数据 -->
-            <span
-              class="product__number__plus"
-              @click="
-                () => {
-                  changeCartItemInfo(shopId, item._id, item, 1);
-                }
-              "
-              >+</span
-            >
-          </div>
+      <div class="product__item" v-for="item in productList" :key="item._id">
+        <div class="product__item__check">
+          <i
+            :class="`iconfont ${item.check ? 'icon-check' : 'icon-unchecked'}`"
+            @click="() => changeCartItemChecked(shopId, item._id)"
+          />
         </div>
-      </template>
+        <img class="product__item__img" :src="item.imgUrl" />
+        <div class="product__item__detail">
+          <h4 class="product__item__title">{{ item.name }}</h4>
+          <p class="product__item__price">
+            <span class="product__item__yen">&yen;</span>{{ item.price }}
+            <span class="product__item__origin">&yen;{{ item.originalPrice }}</span>
+          </p>
+        </div>
+        <!-- 减少数据 -->
+        <div class="product__number">
+          <span
+            class="product__number__minus"
+            @click="
+              () => {
+                changeCartItemInfo(shopId, item._id, item, -1);
+              }
+            "
+            >-</span
+          >
+          {{ item.count || 0 }}
+          <!-- 增加数据 -->
+          <span
+            class="product__number__plus"
+            @click="
+              () => {
+                changeCartItemInfo(shopId, item._id, item, 1);
+              }
+            "
+            >+</span
+          >
+        </div>
+      </div>
     </div>
     <div class="check">
       <div class="check__icon">
@@ -68,55 +66,35 @@
           class="check__icon__img"
           @click="handleCartShowChange"
         />
-        <div class="check__icon__tag">{{ total }}</div>
+        <div class="check__icon__tag">{{ calculations.total }}</div>
       </div>
       <div class="check__info">
         总计：<span class="check__info__price">&yen;{{ calculations.price.toFixed(2) }}</span>
       </div>
-      <div class="check__btn">
-        <router-link :to="{ name: 'Home' }"> 去结算 </router-link>
+      <div class="check__btn" v-show="calculations.total > 0">
+        <router-link
+          :to="{
+            name: 'OrderConfirmation',
+            params: { id: shopId },
+          }"
+        >
+          去结算
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import { useCommonCartEffect } from './commonCartEffect';
+import { useCommonCartEffect } from '../../effects/cartEffects';
 
 // 获取购物车数据
 const useCartEffect = (shopId) => {
   const store = useStore();
-  const { changeCartItemInfo, cartList } = useCommonCartEffect();
-  // 计算购物车中商品的总数
-  const calculations = computed(() => {
-    const productList = cartList[shopId]?.productList;
-    const result = { total: 0, price: 0, allchecked: true };
-    if (productList) {
-      for (const i in productList) {
-        const product = productList[i];
-        // 计算购物车中商品的总数
-        result.total += product.count;
-        // 如果购物车中有商品选中，则计算总价
-        if (product.check) {
-          result.price += product.count * product.price;
-        }
-        // 如果购物车中有商品数量大于0，并且没有选中，则全选为false
-        if (product.count > 0 && !product.check) {
-          result.allchecked = false;
-        }
-      }
-    }
-    return result;
-  });
-
-  // 产品列表
-  const productList = computed(() => {
-    const productList = cartList[shopId]?.productList || {};
-    return productList;
-  });
+  const { changeCartItemInfo, calculations, productList } = useCommonCartEffect(shopId);
 
   // 改变购物车中商品的选中状态
   const changeCartItemChecked = (shopId, productId) => {

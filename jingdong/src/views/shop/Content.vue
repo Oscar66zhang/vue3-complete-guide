@@ -60,7 +60,7 @@
 import { reactive, ref, toRefs, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { get } from '../../utils/request';
-import { useCommonCartEffect } from './commonCartEffect';
+import { useCommonCartEffect } from '../../effects/cartEffects';
 import { useStore } from 'vuex';
 
 const categories = [
@@ -110,9 +110,9 @@ const useCurrentListEffect = (currentTab, shopId) => {
 };
 
 // 和购物车相关的逻辑
-const useCartEffect = () => {
+const useCartEffect = (shopId) => {
   const store = useStore();
-  const { cartList, changeCartItemInfo } = useCommonCartEffect();
+  const { cartList, changeCartItemInfo } = useCommonCartEffect(shopId);
 
   // 改变购物车中商品的数量
   const changeShopName = (shopId, shopName) => {
@@ -141,7 +141,7 @@ export default {
     const shopId = route.params.id;
     const { currentTab, handleTabClick } = useTabEffect();
     const { list } = useCurrentListEffect(currentTab, shopId);
-    const { cartList, changeCartItem, getProductCartCount } = useCartEffect();
+    const { cartList, changeCartItem, getProductCartCount } = useCartEffect(shopId);
     return {
       list,
       currentTab,
