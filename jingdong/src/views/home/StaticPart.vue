@@ -5,10 +5,12 @@
     <i class="iconfont icon-bell position__notice"></i>
   </div>
 
-  <div class="search">
-    <i class="iconfont icon-search"></i>
-    <span class="search__text">山姆会员商店优惠商品</span>
-  </div>
+  <router-link to="/search">
+    <div class="search">
+      <i class="iconfont icon-search"></i>
+      <span class="search__text">山姆会员商店优惠商品</span>
+    </div>
+  </router-link>
 
   <div class="banner">
     <img class="banner__img" src="http://www.dell-lee.com/imgs/vue3/banner.jpg" />

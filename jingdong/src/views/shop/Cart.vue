@@ -37,25 +37,23 @@
         <!-- 减少数据 -->
         <div class="product__number">
           <span
-            class="product__number__minus"
+            class="product__number__minus iconfont icon-minus"
             @click="
               () => {
                 changeCartItemInfo(shopId, item._id, item, -1);
               }
             "
-            >-</span
-          >
+          ></span>
           {{ item.count || 0 }}
           <!-- 增加数据 -->
           <span
-            class="product__number__plus"
+            class="product__number__plus iconfont icon-plus"
             @click="
               () => {
                 changeCartItemInfo(shopId, item._id, item, 1);
               }
             "
-            >+</span
-          >
+          ></span>
         </div>
       </div>
     </div>
@@ -192,7 +190,7 @@ export default {
   &__header {
     display: flex;
     line-height: 0.52rem;
-    border-bottom: 1px solid $content-bgColor;
+    border-bottom: 0.01rem solid $content-bgColor;
     font-size: 0.14rem;
     color: $content-fontcolor;
     &__clear {
@@ -269,25 +267,16 @@ export default {
       position: absolute;
       right: 0;
       bottom: 0.26rem;
-      &__minus,
-      &__plus {
-        display: inline-block;
-        width: 0.2rem;
-        height: 0.2rem;
-        line-height: 0.16rem;
-        border-radius: 50%;
-        border: 0.01rem solid $medium-fontColor;
-        font-size: 0.2rem;
-        text-align: center;
-      }
       &__minus {
-        border: 0.01rem solid $medium-fontColor;
+        position: relative;
+        top: 0.02rem;
         color: $medium-fontColor;
         margin-right: 0.05rem;
       }
       &__plus {
-        background: $btn-bgColor;
-        color: $bgColor;
+        position: relative;
+        top: 0.02rem;
+        color: $btn-bgColor;
         margin-left: 0.05rem;
       }
     }
