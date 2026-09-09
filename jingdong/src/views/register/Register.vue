@@ -120,7 +120,7 @@ export default {
     margin: 0 0.4rem 0.16rem 0.4rem;
     padding: 0 0.16rem;
     background: #f9f9f9;
-    border: 0.01rem solid rgba(0, 0, 0, 0.1);
+    border: 0.01rem solid rgba($dark-fontColor, 0.1);
     border-radius: 0.06rem;
     &__content {
       margin-top: 0.12rem;
@@ -140,7 +140,7 @@ export default {
     margin: 0.32rem 0.4rem 0.16rem 0.4rem;
     line-height: 0.48rem;
     background: $btn-bgColor;
-    box-shadow: 0 0.04rem 0.08rem 0 rgba(0, 145, 255, 0.32);
+    box-shadow: 0 0.04rem 0.08rem 0 rgba($btn-bgColor, 0.32);
     border-radius: 0.04rem;
     border-radius: 0.04rem;
     color: $bgColor;

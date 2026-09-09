@@ -40,7 +40,7 @@ export const useToastEffect = () => {
   top: 50%;
   transform: translate(-50%, -50%);
   padding: 0.1rem;
-  background: rgb(0, 0, 0, 0.35);
+  background: rgba($dark-fontColor, 0.35);
   border-radius: 0.05rem;
   color: $bgColor;
 }

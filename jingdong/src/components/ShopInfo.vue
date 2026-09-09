@@ -10,6 +10,20 @@
           <span class="shop__content__tag">基础运费:{{ item.expressPrice }}</span>
         </div>
         <p class="shop__content__highlight">{{ item.slogan }}</p>
+        <div v-if="item.products" class="shop__products">
+          <div v-for="product in item.products" :key="product.name" class="shop__product">
+            <img :src="product.imgUrl" class="shop__product__img" />
+            <p class="shop__product__title">{{ product.name }}</p>
+            <p class="shop__product__price">
+              <span class="yen">&yen;</span>
+              <span class="price">{{ product.price }}</span>
+
+              <span class="origin"
+                >&yen;<span>{{ product.price }}</span>
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -57,7 +71,47 @@ export default {
       margin: 0.08rem 0 0 0;
       line-height: 0.18rem;
       font-size: 0.13rem;
-      color: $height-fontColor;
+      color: $hight-fontColor;
+    }
+  }
+  &__products {
+    overflow: hidden;
+    margin: 0.08rem 0.07rem 0 -0.18rem;
+  }
+
+  &__product {
+    width: 33.33%;
+    padding-left: 0.18rem;
+    box-sizing: border-box;
+    float: left;
+    &__img {
+      width: 100%;
+    }
+    &__title {
+      margin: 0.04rem 0 0 0;
+      line-height: 0.17rem;
+      font-size: 0.12rem;
+      color: $content-fontcolor;
+      @include ellipsis;
+    }
+    &__price {
+      line-height: 0.2rem;
+      margin: 0.02rem 0 0 0;
+      color: $light-fontColor;
+      font-size: 0.14rem;
+      @include ellipsis;
+      .yen {
+        font-size: 0.12rem;
+        color: $hight-fontColor;
+      }
+      .price {
+        color: $hight-fontColor;
+      }
+      .origin {
+        margin-left: 0.06rem;
+        font-size: 0.12rem;
+        text-decoration: line-through;
+      }
     }
   }
 }

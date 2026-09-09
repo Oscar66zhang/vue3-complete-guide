@@ -34,10 +34,12 @@ const useBackRouterEffect = () => {
 };
 
 // 搜索列表相关逻辑
-const handleSearchInputChange = (e) => {
+const useSearchListEffect = () => {
   const searchList = ref([]);
-  const getSearchList = async () => {
-    const result = await get('/shop/search');
+  const getSearchList = async (keyword) => {
+    const result = await get('/shop/search', {
+      keyword,
+    });
     if (result?.errno === 0 && result?.data?.length) {
       searchList.value = result.data;
     }
@@ -54,14 +56,19 @@ export default {
     // 搜索词相关逻辑
     const keyword = ref(route.query.keyword || '');
 
+    const handleSearchInputChange = () => {
+      getSearchList(keyword.value);
+    };
+
     const { handleBackClick } = useBackRouterEffect();
     // 获取搜索列表
-    const { searchList, getSearchList } = handleSearchInputChange();
-    getSearchList();
+    const { searchList, getSearchList } = useSearchListEffect();
+    getSearchList(keyword.value);
     return {
       keyword,
       handleBackClick,
       searchList,
+      handleSearchInputChange,
     };
   },
 };
@@ -72,6 +79,9 @@ export default {
 @import '../../style/mixins.scss';
 .wrapper {
   padding: 0 0.18rem;
+  a {
+    text-decoration: none;
+  }
 }
 
 .search {

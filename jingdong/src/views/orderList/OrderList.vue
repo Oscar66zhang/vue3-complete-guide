@@ -48,6 +48,7 @@ const useOrderListEffect = () => {
         order.totalPrice = totalPrice;
         order.totalNumber = totalNumber;
       });
+
       data.list = result.data;
     }
     console.log('data:', data);
@@ -122,7 +123,7 @@ export default {
       &__price {
         margin-bottom: 0.04rem;
         font-size: 0.14rem;
-        color: $height-fontColor;
+        color: $hight-fontColor;
         text-align: right;
       }
       &__count {

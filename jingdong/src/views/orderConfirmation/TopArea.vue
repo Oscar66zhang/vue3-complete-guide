@@ -38,7 +38,7 @@ export default {
   position: relative;
   height: 1.96rem;
   background-size: 100% 1.59rem;
-  background-image: linear-gradient(0deg, rgba(0, 145, 255, 0) 4%, #0091ff 50%);
+  background-image: linear-gradient(0deg, rgba($btn-bgColor, 0) 4%, $btn-bgColor 50%);
   background-repeat: no-repeat;
   &__header {
     position: relative;

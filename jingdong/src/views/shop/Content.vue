@@ -170,7 +170,7 @@ export default {
   overflow-y: scroll;
   height: 100%;
   width: 0.76rem;
-  background: #f5f5f5;
+  background: $search-bgColor;
   &__item {
     line-height: 0.4rem;
     text-align: center;
@@ -220,7 +220,7 @@ export default {
       margin: 0;
       line-height: 0.2rem;
       font-size: 0.14rem;
-      color: $height-fontColor;
+      color: $hight-fontColor;
     }
     &__yen {
       font-size: 0.12rem;

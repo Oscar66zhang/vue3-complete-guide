@@ -92,7 +92,7 @@ export default {
       margin: 0.06rem 0 0 0;
       line-height: 0.2rem;
       font-size: 0.14rem;
-      color: $height-fontColor;
+      color: $hight-fontColor;
     }
 
     &__total {

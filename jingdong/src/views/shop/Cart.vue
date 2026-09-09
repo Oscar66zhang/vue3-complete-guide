@@ -170,7 +170,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba($dark-fontColor, 0.5);
   z-index: 1;
 }
 
@@ -199,7 +199,7 @@ export default {
       text-align: right;
       &__btn {
         display: inline-block;
-        color: $height-fontColor;
+        color: $hight-fontColor;
       }
     }
     &__all {
@@ -250,7 +250,7 @@ export default {
       margin: 0.06rem 0 0 0;
       line-height: 0.2rem;
       font-size: 0.14rem;
-      color: $height-fontColor;
+      color: $hight-fontColor;
     }
     &__yen {
       font-size: 0.12rem;
@@ -305,7 +305,7 @@ export default {
       min-width: 0.2rem;
       height: 0.2rem;
       line-height: 0.2rem;
-      background-color: $height-fontColor;
+      background-color: $hight-fontColor;
       border-radius: 0.1rem;
       font-size: 0.12rem;
       text-align: center;
@@ -318,7 +318,7 @@ export default {
     color: $content-fontcolor;
     font-size: 0.12rem;
     &__price {
-      color: $height-fontColor;
+      color: $hight-fontColor;
       font-size: 0.18rem;
     }
   }

@@ -60,6 +60,9 @@ const useMakerOrderEffect = (shopId, shopName, productList) => {
         products,
       });
       if (result?.errno === 0) {
+        const cartList = JSON.parse(localStorage.cartList || '{}');
+        delete cartList[shopId];
+        localStorage.cartList = JSON.stringify(cartList);
         store.commit('clearCartData', shopId);
         router.push({ name: 'OrderList' });
       } else {
@@ -141,7 +144,7 @@ export default {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba($dark-fontColor, 0.5);
   &__content {
     position: absolute;
     top: 50%;
@@ -149,19 +152,19 @@ export default {
     transform: translate(-50%, -50%);
     width: 3rem;
     height: 1.56rem;
-    background: #fff;
+    background: $bgColor;
     border-radius: 0.04rem;
     text-align: center;
     &__title {
       margin: 0.24rem 0 0 0;
       line-height: 0.26rem;
       font-size: 0.18rem;
-      color: #333;
+      color: $content-fontcolor;
     }
     &__desc {
       margin: 0.08rem 0 0 0;
       font-size: 0.14rem;
-      color: #666666;
+      color: $medium-fontColor;
     }
     &__btns {
       display: flex;
@@ -182,7 +185,7 @@ export default {
       &--last {
         margin-left: 0.12rem;
         background-color: #4fb0f9;
-        color: #fff;
+        color: $bgColor;
       }
     }
   }

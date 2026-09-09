@@ -117,16 +117,16 @@ export default {
     display: flex;
     line-height: 0.32rem;
     margin-top: 0.16rem;
-    color: #333;
+    color: $content-fontcolor;
     .iconfont {
       position: absolute;
       left: 0.16rem;
-      color: #b7b7b7;
+      color: $content-fontColor;
     }
     &__area {
       flex: 1;
       padding: 0 0.12rem 0 0.44rem;
-      background: #f5f5f5;
+      background: $search-bgColor;
       border-radius: 0.16rem;
       border: none;
       outline: none;
@@ -144,7 +144,7 @@ export default {
       margin: 0;
       font-size: 0.16rem;
       font-weight: normal;
-      color: #333;
+      color: $content-fontcolor;
       &__clear {
         float: right;
         font-size: 0.14rem;
@@ -161,8 +161,8 @@ export default {
         padding: 0 0.1rem;
         line-height: 0.32rem;
         font-size: 0.14rem;
-        background: #f5f5f5;
-        color: #666;
+        background: $search-bgColor;
+        color: $medium-fontColor;
       }
     }
   }
