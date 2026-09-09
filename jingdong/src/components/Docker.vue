@@ -39,7 +39,7 @@ export default {
       {
         icon: 'icon-my',
         text: '我的',
-        to: { name: 'Home' },
+        to: { name: 'Address' },
       },
     ];
 

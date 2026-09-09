@@ -4,3 +4,19 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+@mixin fix-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0.5rem;
+  right: 0;
+}
+
+@mixin title {
+  line-height: 0.44rem;
+  background: $bgColor;
+  font-size: 0.16rem;
+  color: $content-fontcolor;
+  text-align: center;
+}

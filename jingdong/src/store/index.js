@@ -139,7 +139,7 @@ export default createStore({
     // 清除购物车的数据
     clearCartData(state, shopId) {
       if (state.cartList[shopId]) {
-        state.cartList[shopId].productList = {};
+        delete state.cartList[shopId];
         setLocalCartList(state);
       }
     },

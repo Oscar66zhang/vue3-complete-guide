@@ -75,20 +75,12 @@ export default {
 @import '../../style/mixins.scss';
 .wrapper {
   overflow-y: auto;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0.5rem;
-  right: 0;
-  background: rgb(248, 248, 248);
+  @include fix-content;
+  background: $darkBgColor;
 }
 
 .title {
-  line-height: 0.44rem;
-  background: $bgColor;
-  font-size: 0.16rem;
-  color: $content-fontcolor;
-  text-align: center;
+  @include title;
 }
 
 .orders {

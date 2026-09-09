@@ -18,6 +18,15 @@
       </div>
       <div class="cart__total">共计{{ cart.total }}件</div>
     </div>
+    <div v-if="Object.keys(list).length === 0" class="empty">
+      <i class="empty__icon iconfont icon-gouwuchekong"></i>
+
+      <div class="empty__title">购物车还是空的</div>
+
+      <div class="empty__desc">快去挑选一些喜欢的商品吧</div>
+
+      <button class="empty__button" @click="handleGoShopping">去逛逛</button>
+    </div>
   </div>
   <Docker :currentIndex="1" />
 </template>
@@ -46,11 +55,17 @@ export default {
     // 处理点击
     const router = useRouter();
 
+    // 跳转到购物车
     const handleCartClick = (key) => {
       router.push(`/orderConfirmation/${key}`);
     };
 
-    return { list, handleCartClick };
+    // 跳转到首页
+    const handleGoShopping = () => {
+      router.push('/');
+    };
+
+    return { list, handleCartClick, handleGoShopping };
   },
 };
 </script>
@@ -60,20 +75,12 @@ export default {
 @import '../../style/mixins.scss';
 .wrapper {
   overflow-y: auto;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0.5rem;
-  right: 0;
-  background: rgb(248, 248, 248);
+  @include fix-content;
+  background: $darkBgColor;
 }
 
 .title {
-  line-height: 0.44rem;
-  background: $bgColor;
-  font-size: 0.16rem;
-  color: $content-fontcolor;
-  text-align: center;
+  @include title;
 }
 
 .cart {
@@ -126,6 +133,49 @@ export default {
     color: $light-fontColor;
     text-align: center;
     background: $search-bgColor;
+  }
+}
+
+.empty {
+  position: absolute;
+  top: 0.44rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__icon {
+    margin-bottom: 0.16rem;
+    font-size: 0.56rem;
+    line-height: 1;
+  }
+
+  &__title {
+    margin-bottom: 0.08rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: $content-fontColor;
+  }
+
+  &__desc {
+    margin-bottom: 0.2rem;
+    font-size: 0.13rem;
+    color: $light-fontColor;
+  }
+
+  &__button {
+    width: 1.2rem;
+    height: 0.36rem;
+    border: none;
+    border-radius: 0.18rem;
+    background: $btn-bgColor;
+    color: $bgColor;
+    font-size: 0.14rem;
+    cursor: pointer;
   }
 }
 </style>
