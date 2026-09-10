@@ -47,6 +47,11 @@ const routes = [
     name: 'AddressEdit',
     component: () => import('@/views/addressEdit/AddressEdit.vue'),
   },
+  {
+    path: '/addressSelect',
+    name: 'AddressSelect',
+    component: () => import('@/views/addressSelect/AddressSelect.vue'),
+  },
 
   {
     path: '/cartList',

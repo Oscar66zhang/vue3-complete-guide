@@ -3,7 +3,7 @@
     <Toast v-if="show" :message="toastMessage" />
     <div class="title">
       <i class="iconfont icon-back" @click="handleBackClick"></i>
-      新建地址
+      {{ isEdit ? '编辑' : '新建' }}地址
       <span class="title__save" @click="handleSaveClick">保存</span>
     </div>
     <div class="content">
@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { post } from '../../utils/request';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { post, get } from '../../utils/request';
+import { useRoute, useRouter } from 'vue-router';
 import Toast, { useToastEffect } from '../../components/Toast.vue';
 
 // 点击回退逻辑
@@ -58,6 +58,12 @@ export default {
   name: 'AddressEdit',
   components: { Toast },
   setup() {
+    const route = useRoute();
+    const id = route.query.id;
+    // 判断是否是编辑地址
+    const isEdit = Boolean(route.query.id);
+    console.log('isEdit:', isEdit);
+
     const city = ref('');
     const state = ref('');
     const zipCode = ref('');
@@ -68,7 +74,35 @@ export default {
 
     const { handleBackClick } = useBackRouterEffect();
 
+    // 获取单个地址详情
+    const getAddressDetail = async () => {
+      if (!isEdit) {
+        return;
+      }
+
+      try {
+        const result = await get(`/user/address/${id}`);
+
+        if (result?.errno === 0) {
+          const data = result.data;
+
+          city.value = data?.city || '';
+          state.value = data?.state || '';
+          zipCode.value = data?.zipCode || '';
+          country.value = data?.country || '';
+          address.value = data?.address || '';
+        } else {
+          showToast(result?.message || '获取地址失败');
+        }
+      } catch (error) {
+        console.log('Get address detail error:', error);
+
+        showToast('获取地址失败');
+      }
+    };
+
     const handleSaveClick = async () => {
+      // 表单校验
       if (
         !city.value.trim() ||
         !state.value.trim() ||
@@ -80,24 +114,56 @@ export default {
         return;
       }
 
-      const result = await post('/user/createAddress', {
+      // 请求参数
+      const data = {
         city: city.value,
         state: state.value,
         zipCode: zipCode.value,
         country: country.value,
         address: address.value,
-      });
+      };
 
-      if (result?.errno === 0) {
-        showToast('新增地址成功');
+      try {
+        // 编辑地址
+        if (isEdit) {
+          const result = await post(`/user/updateAddress/${id}`, data);
 
-        setTimeout(() => {
-          handleBackClick();
-        }, 1000);
-      } else {
-        showToast(result?.message || '新增地址失败');
+          if (result?.errno === 0) {
+            showToast('修改地址成功');
+
+            setTimeout(() => {
+              handleBackClick();
+            }, 1000);
+          } else {
+            showToast(result?.message || '修改地址失败');
+          }
+
+          return;
+        }
+
+        // 新增地址
+        const result = await post('/user/createAddress', data);
+
+        if (result?.errno === 0) {
+          showToast('新增地址成功');
+
+          setTimeout(() => {
+            handleBackClick();
+          }, 1000);
+        } else {
+          showToast(result?.message || '新增地址失败');
+        }
+      } catch (error) {
+        console.log('Save address error:', error);
+
+        showToast(isEdit ? '修改地址失败' : '新增地址失败');
       }
     };
+
+    // 页面加载
+    onMounted(() => {
+      getAddressDetail();
+    });
 
     return {
       city,
@@ -105,6 +171,7 @@ export default {
       zipCode,
       country,
       address,
+      isEdit,
       handleBackClick,
       handleSaveClick,
       show,

@@ -1,7 +1,7 @@
 <template>
   <div class="position">
     <i class="iconfont icon-position position__icon"></i>
-    北京市东城区东长安街1号
+    135 Main Street, San Francisco, CA 94105, United States
     <i class="iconfont icon-bell position__notice"></i>
   </div>
 

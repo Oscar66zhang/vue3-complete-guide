@@ -1,12 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="title">
-      我的地址
-
-      <span class="title__create">
-        <router-link to="/addressEdit"> 新建 </router-link>
-      </span>
-    </div>
+    <div class="title">地址选择</div>
 
     <!-- 加载中 -->
     <div class="loading" v-if="loading">
@@ -66,21 +60,15 @@
         <div class="address__item__address">
           {{ address.address }}
         </div>
-
-        <!-- 右侧箭头 -->
-        <i class="iconfont icon-back address__item__arrow"></i>
       </div>
     </div>
   </div>
-
-  <Docker :currentIndex="3" />
 </template>
 
 <script>
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import Docker from '../../components/Docker.vue';
-import { get } from '../../utils/request';
+import { get } from '../../utils/request.js';
+import { useRoute, useRouter } from 'vue-router';
 
 // 地址列表相关逻辑
 const useAddressListEffect = () => {
@@ -113,26 +101,16 @@ const useAddressListEffect = () => {
 };
 
 export default {
-  name: 'AddressView',
-
-  components: {
-    Docker,
-  },
-
+  name: 'AddressSelect',
   setup() {
     const router = useRouter();
-
+    const route = useRoute();
     // 获取地址列表逻辑
     const { loading, addressList, getAddressList } = useAddressListEffect();
 
-    // 点击地址进入编辑页面
     const handleAddressClick = (id) => {
-      router.push({
-        path: '/addressEdit',
-        query: {
-          id,
-        },
-      });
+      const path = route.query.path;
+      router.push(`${path}?addressId=${id}`);
     };
 
     // 页面加载完成后请求地址列表
@@ -154,10 +132,13 @@ export default {
 @import '../../style/mixins.scss';
 
 .wrapper {
-  overflow-y: auto;
+  overflow-y: scroll;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background: $darkBgColor;
-
-  @include fix-content;
 }
 
 .loading {
@@ -237,17 +218,6 @@ export default {
   position: relative;
 
   @include title;
-
-  &__create {
-    position: absolute;
-    right: 0.18rem;
-    font-size: 0.14rem;
-
-    a {
-      text-decoration: none;
-      color: $content-fontcolor;
-    }
-  }
 }
 
 .address {

@@ -3,7 +3,9 @@
     <div class="order__price">
       实付金额 <b>￥{{ calculations.price }}</b>
     </div>
-    <div class="order__btn" @click="() => handleShowConfirmChange(true)">提交订单</div>
+    <div v-show="showSubmitBtn" class="order__btn" @click="() => handleShowConfirmChange(true)">
+      提交订单
+    </div>
   </div>
 
   <Toast v-if="show" :message="toastMessage" />
@@ -39,7 +41,7 @@ import Toast, { useToastEffect } from '../../components/Toast.vue';
 import { useStore } from 'vuex';
 
 // 下单相关逻辑
-const useMakerOrderEffect = (shopId, shopName, productList) => {
+const useMakerOrderEffect = (shopId, shopName, productList, addressId) => {
   const store = useStore();
   const router = useRouter();
   const { showToast } = useToastEffect();
@@ -53,7 +55,7 @@ const useMakerOrderEffect = (shopId, shopName, productList) => {
 
     try {
       const result = await post('/order', {
-        addressId: 1,
+        addressId,
         shopId,
         shopName: shopName.value,
         isCanceled,
@@ -93,10 +95,16 @@ export default {
     const shopId = parseInt(route.params.id, 10);
     const { calculations, shopName, productList } = useCommonCartEffect(shopId);
     const { show, toastMessage } = useToastEffect();
-    const { handleConfirmOrder } = useMakerOrderEffect(shopId, shopName, productList);
+    const { handleConfirmOrder } = useMakerOrderEffect(
+      shopId,
+      shopName,
+      productList,
+      route.query.addressId,
+    );
     const { showConfirm, handleShowConfirmChange } = useShowMaskEffect();
 
     return {
+      showSubmitBtn: !!route.query.addressId,
       calculations,
       show,
       toastMessage,
